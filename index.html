@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<title>菜鸟教程(runoob.com)</title>
+    <meta charset="utf-8">
+    <title>跑马灯组件</title>
 </head>
+
 <body>
-    <h1>我的第一个标题</h1>
-    <p>我的第一个段落。</p>
+    <h1>应该是性能最高的一个跑马灯了吧</h1>
+    <p></p>
     <div id='paomadeng'></div>
 </body>
+
+<style>
+    #paomadeng {
+        --item-width: 200px;
+        --item-height: 16px;
+        --item-init-x:200px;
+        --item-target-x:-200px;
+        position: relative;
+        overflow: hidden;
+        width: var(--item-width);
+        height: 16px;
+    }
+
+    .item {
+        height: var(--item-height);
+        width: var(--item-width);
+        position: absolute;
+        display: inline-block;
+    }
+
+    @keyframes move {
+        from {
+            transform: translateX(var(--item-init-x));
+        }
+
+        to {
+            transform: translateX(var(--item-target-x));
+        }
+    }
+</style>
 <script>
+    let options = {
+        //绑定的跑马灯容器
+        parentName: "paomadeng",
+        itemHeight: 10,
+        itemWidth: 100,
+        initItemNum: 2,
+        moveTime: 2,
+        //跑马灯跑动方向
+        direction: "left",
+    }
     let dom = document.getElementById('paomadeng');
     //创建dom片段
     let frag = document.createDocumentFragment();
@@ -19,41 +61,46 @@
     let itemCla = 'item';
 
     //显示内容
-    let dataArr = ['你好中国','你太坏了，我不喜欢你了','什么啊？？？？？？？'];
-    for(let i = 0; i < itemNum;i++){
+    let dataArr = [
+        { value: '你好中国' },
+        { value: '你太坏了' },
+        { value: '什么啊？？？？？？？' }];
+    //创建
+    for (let i = 0; i < itemNum; i++) {
         let child = document.createElement("div");
         child.classList.add(itemCla);
         frag.appendChild(child);
-        child.innerText = dataArr[i];
-        child.id = 'item'+i;
+        // animation: move 2s linear 1s infinite;
+        let time = i * 1;
+        child.style.animation = `move 2s linear `+time+'s infinite';
+        child.id = 'item_' + i;
     }
     dom.appendChild(frag);
-    
-    dom.addEventListener("webkitTransitionEnd",(e)=>{
-        console.log(e);
-    });
+
+    // 动画开始时事件
+    dom.addEventListener("webkitAnimationStart", e => {
+        console.log("开始动画", e.target.id);
+        initItem(e);
+    })
+    //动画结束事件
+    dom.addEventListener("webkitAnimationIteration", e => {
+        console.log('结束动画', e.target.id);
+        initItem(e);
+    })
+
+    function initItem(e){
+        let item = e.target;
+        item.innerText = getData().value;
+    }
+
+    let dataIndex = 0;
+    function getData() {
+        if(dataIndex == dataArr.length){
+            dataIndex = 0;
+        }
+        return dataArr[dataIndex++];
+        
+    }
 </script>
-<style>
-    #paomadeng{
-        --item-width:200px;
-        position: relative;
-    }
-    .item{
-        height: 16px;
-        width: var(--item-width);
-        position: absolute;
-        animation: move 2s linear infinite;
-        transform: scale(1);
-        display: inline-block;
-    }
-    @keyframes move
-     {
-        from{
-            transform: translateX(0);
-        }
-        to{
-            transform: translateX(var(--item-width));
-        }
-    }
-</style>
+
 </html>
