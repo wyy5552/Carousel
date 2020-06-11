@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+    <h1>我的第一个标题</h1>
+    <p>我的第一个段落。</p>
+    <div id='paomadeng'></div>
+</body>
+<script>
+    let dom = document.getElementById('paomadeng');
+    //创建dom片段
+    let frag = document.createDocumentFragment();
+    //初始化的div数量
+    let itemNum = 2;
+    //子组件的样式类
+    let itemCla = 'item';
+
+    //显示内容
+    let dataArr = ['你好中国','你太坏了，我不喜欢你了','什么啊？？？？？？？'];
+    for(let i = 0; i < itemNum;i++){
+        let child = document.createElement("div");
+        child.classList.add(itemCla);
+        frag.appendChild(child);
+        child.innerText = dataArr[i];
+        child.id = 'item'+i;
+    }
+    dom.appendChild(frag);
+    
+    dom.addEventListener("webkitTransitionEnd",(e)=>{
+        console.log(e);
+    });
+</script>
+<style>
+    #paomadeng{
+        --item-width:200px;
+        position: relative;
+    }
+    .item{
+        height: 16px;
+        width: var(--item-width);
+        position: absolute;
+        animation: move 2s linear infinite;
+        transform: scale(1);
+        display: inline-block;
+    }
+    @keyframes move
+     {
+        from{
+            transform: translateX(0);
+        }
+        to{
+            transform: translateX(var(--item-width));
+        }
+    }
+</style>
+</html>
