@@ -16,15 +16,15 @@
     #paomadeng {
         --item-width: 200px;
         --item-height: 16px;
-        --item-init-x:200px;
-        --item-target-x:-200px;
+        --item-init-x: 200px;
+        --item-target-x: -200px;
         position: relative;
         overflow: hidden;
         width: var(--item-width);
         height: 16px;
     }
 
-    .item {
+    #paomadeng div {
         height: var(--item-height);
         width: var(--item-width);
         position: absolute;
@@ -33,32 +33,19 @@
 
     @keyframes move {
         from {
-            transform: translateX(var(--item-init-x));
+            transform: translateY(-16px);
         }
 
         to {
-            transform: translateX(var(--item-target-x));
+            transform: translateY(16px);
         }
     }
 </style>
-<script>
-    let options = {
-        //绑定的跑马灯容器
-        parentName: "paomadeng",
-        itemHeight: 10,
-        itemWidth: 100,
-        initItemNum: 2,
-        moveTime: 2,
-        //跑马灯跑动方向
-        direction: "left",
-    }
-    let dom = document.getElementById('paomadeng');
-    //创建dom片段
-    let frag = document.createDocumentFragment();
-    //初始化的div数量
-    let itemNum = 2;
-    //子组件的样式类
-    let itemCla = 'item';
+<script src="Carousel.js"></script>
+
+<script type="text/javascript">
+
+
     //显示内容
     let dataArr = [
         { value: '你好中国' },
@@ -73,42 +60,33 @@
         { value: '你好中国10' },
         { value: '你太坏了' },
         { value: '什么啊？？？？？？？' }];
-    //创建
-    for (let i = 0; i < itemNum; i++) {
-        let child = document.createElement("div");
-        child.classList.add(itemCla);
-        frag.appendChild(child);
-        // animation: move 2s linear 1s infinite;
-        let time = i * 1;
-        child.style.animation = `move 2s linear `+time+'s infinite';
-        child.id = 'item_' + i;
-    }
-    dom.appendChild(frag);
 
-    // 动画开始时事件
-    dom.addEventListener("webkitAnimationStart", e => {
-        console.log("开始动画", e.target.id);
-        initItem(e);
-    })
-    //动画结束事件
-    dom.addEventListener("webkitAnimationIteration", e => {
-        console.log('结束动画', e.target.id);
-        initItem(e);
-    })
-
-    function initItem(e){
-        let item = e.target;
-        item.innerText = getData().value;
+    let options = {
+        //绑定的跑马灯容器dom id
+        parentName: "paomadeng",
+        //初始化创建的dom数量
+        initItemNum: 2,
+        //移动用时
+        moveTime: 2,
+        //默认的样式
+        itemCla: "item",
+        //跑马灯跑动方向
+        direction: "left",
+        //动画名字
+        aniName: "move",
+        //数据
+        dataArr: [],
+        //点击回调
+        clickCallBack: clickCallBack
     }
 
-    let dataIndex = 0;
-    function getData() {
-        if(dataIndex == dataArr.length){
-            dataIndex = 0;
-        }
-        return dataArr[dataIndex++];
-        
+    function clickCallBack(e) {
+        console.log(e);
+        console.log(e.target);
+        console.log(e.target.bindData);
     }
+
+    carousel.initCarousel(options, dataArr);
 </script>
 
 </html>
