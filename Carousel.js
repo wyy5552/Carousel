@@ -19,25 +19,29 @@ var carousel = {
             child.id = 'item_' + i;
         }
         pdom.appendChild(frag);
-        // 动画开始时事件
-        pdom.addEventListener("webkitAnimationStart", e => {
-            // console.log("开始动画", e.target.id);
-            this.initItem(e);
-        });
-        //动画结束事件
-        pdom.addEventListener("webkitAnimationIteration", e => {
-            // console.log('结束动画', e.target.id);
-            this.initItem(e);
-        });
-        //事件委托
-        pdom.addEventListener("click", this.onClick.bind(this));
+        this.initEvent();
+
     },
     onClick: function (e) {
         this.options.clickCallBack && this.options.clickCallBack(e);
     },
-    removeClick: function () {
+    initEvent: function () {
         let pdom = document.getElementById(this.options.parentName);
-        pdom.removeEventListener("click", this.onClick);
+        // 动画开始时事件
+        pdom.addEventListener("webkitAnimationStart", this.initItem.bind(this));
+        //动画结束事件
+        pdom.addEventListener("webkitAnimationIteration", this.initItem.bind(this));
+        //事件委托
+        if (this.options.clickCallBack)
+            pdom.addEventListener("click", this.onClick.bind(this));
+    },
+    removeEvent: function () {
+        let pdom = document.getElementById(this.options.parentName);
+        if (this.options.clickCallBack)
+            pdom.removeEventListener("click", this.onClick.bind(this));
+        pdom.removeEventListener("webkitAnimationStart", this.initItem.bind(this));
+        //动画结束事件
+        pdom.removeEventListener("webkitAnimationIteration", this.initItem.bind(this));
     },
     initItem(e) {
         let item = e.target;
