@@ -9,11 +9,12 @@
 <body>
     <h1>应该是性能最高的一个跑马灯了吧</h1>
     <p></p>
-    <div id='paomadeng'></div>
+    <div id='paomadeng' class="paomadeng"></div>
+    <div id='paomadeng2' class="paomadeng paomadeng2"></div>
 </body>
 
 <style>
-    #paomadeng {
+    .paomadeng {
         --item-width: 200px;
         --item-height: 16px;
         --item-init-x: 200px;
@@ -23,33 +24,48 @@
         width: var(--item-width);
         height: 16px;
     }
+    .paomadeng2{
+        margin-top: 100px;   
+    }
 
-    #paomadeng div {
+    .paomadeng div {
         height: var(--item-height);
         width: var(--item-width);
         position: absolute;
         display: inline-block;
     }
-
+    .paomadeng2 div {
+        height: auto;
+        width: auto;
+        position: absolute;
+        display: inline-block;
+    }
     @keyframes move {
-        from {
+        0% {
             transform: translateY(-16px);
         }
-
-        to {
+        100% {
             transform: translateY(16px);
+        }
+    }
+    @keyframes move2 {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(var(--item-width));
         }
     }
 </style>
 <script src="Carousel.js"></script>
 <script type="text/javascript">
-    let dataArr = [
+    var dataArr = [
         { value: '你好中国' },
         { value: '你好中国2' },
         { value: '你太坏了' },
         { value: '什么啊？？？？？？？' }];
 
-    let options = {
+    var options = {
         //绑定的跑马灯容器dom id
         parentName: "paomadeng",
         //初始化创建的dom数量
@@ -61,7 +77,7 @@
         //动画名字
         aniName: "move",
         //数据
-        dataArr: [],
+        dataArr: dataArr,
         //点击回调
         clickCallBack: clickCallBack
     }
@@ -71,8 +87,27 @@
         console.log(e.target);
         console.log(e.target.bindData);
     }
+    var carou = new Carousel();
+    carou.initCarousel(options);
 
-    carousel.initCarousel(options, dataArr);
+    var options = {
+        //绑定的跑马灯容器dom id
+        parentName: "paomadeng2",
+        //初始化创建的dom数量
+        initItemNum: 2,
+        //移动用时
+        moveTime: 4,
+        //默认的样式
+        itemCla: "item",
+        //动画名字
+        aniName: "move2",
+        //数据
+        dataArr: dataArr,
+        //点击回调
+        clickCallBack: clickCallBack
+    }
+    var carou = new Carousel();
+    carou.initCarousel(options);
 </script>
 
 </html>

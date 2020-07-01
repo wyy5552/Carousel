@@ -1,60 +1,62 @@
-var carousel = {
-    showIndex: 0,
-    dataArr: [],
-    options: {},
-    initCarousel: function (options, dataArr) {
-        this.options = options;
-        this.dataArr = dataArr;
-        let pdom = document.getElementById(options.parentName);
+var Carousel = function () {
+    var that = this;
+    that.showIndex = 0;
+    that.dataArr = [];
+    that.options = {};
+    that.initCarousel = function (options) {
+        that.options = options;
+        that.dataArr = options.dataArr;
+        var pdom = document.getElementById(options.parentName);
         //创建dom片段
-        let frag = document.createDocumentFragment();
+        var frag = document.createDocumentFragment();
         //创建
-        for (let i = 0; i < options.initItemNum; i++) {
-            let child = document.createElement("div");
+        for (var i = 0; i < options.initItemNum; i++) {
+            var child = document.createElement("div");
             child.classList.add(options.itemCla);
             frag.appendChild(child);
             // animation: move 2s linear 1s infinite;
-            let time = i * 1;
+            var time = i * 1;
             child.style.animation = options.aniName + ` ` + options.moveTime + `s linear ` + time + 's infinite';
-            child.id = 'item_' + i;
+            // child.id = 'item_' + i;
         }
         pdom.appendChild(frag);
-        this.initEvent();
+        that.initEvent();
 
-    },
-    onClick: function (e) {
-        this.options.clickCallBack && this.options.clickCallBack(e);
-    },
-    initEvent: function () {
-        let pdom = document.getElementById(this.options.parentName);
+    };
+
+    that.onClick = function (e) {
+        that.options.clickCallBack && that.options.clickCallBack(e);
+    };
+    that.initEvent = function () {
+        var pdom = document.getElementById(that.options.parentName);
         // 动画开始时事件
-        pdom.addEventListener("webkitAnimationStart", this.initItem.bind(this));
+        pdom.addEventListener("webkitAnimationStart", that.initItem);
         //动画结束事件
-        pdom.addEventListener("webkitAnimationIteration", this.initItem.bind(this));
+        pdom.addEventListener("webkitAnimationIteration", that.initItem);
         //事件委托
-        if (this.options.clickCallBack)
-            pdom.addEventListener("click", this.onClick.bind(this));
-    },
-    removeEvent: function () {
-        let pdom = document.getElementById(this.options.parentName);
-        if (this.options.clickCallBack)
-            pdom.removeEventListener("click", this.onClick.bind(this));
-        pdom.removeEventListener("webkitAnimationStart", this.initItem.bind(this));
+        if (that.options.clickCallBack)
+            pdom.addEventListener("click", that.onClick);
+    };
+    that.removeEvent = function () {
+        var pdom = document.getElementById(that.options.parentName);
+        if (that.options.clickCallBack)
+            pdom.removeEventListener("click", that.onClick);
+        pdom.removeEventListener("webkitAnimationStart", that.initItem);
         //动画结束事件
-        pdom.removeEventListener("webkitAnimationIteration", this.initItem.bind(this));
-    },
-    initItem(e) {
-        let item = e.target;
-        let dataItem = this.getData();
+        pdom.removeEventListener("webkitAnimationIteration", that.initItem);
+    };
+    that.initItem = function (e) {
+        var item = e.target;
+        var dataItem = that.getData();
         item.innerText = dataItem.value;
         //将数据绑定到节点上，方便扩展
         item.bindData = dataItem;
-    },
-    getData() {
-        if (this.showIndex == dataArr.length) {
-            this.showIndex = 0;
+    };
+    that.getData = function () {
+        if (that.showIndex == dataArr.length) {
+            that.showIndex = 0;
         }
-        return this.dataArr[this.showIndex++];
+        return that.dataArr[that.showIndex++];
 
     }
 

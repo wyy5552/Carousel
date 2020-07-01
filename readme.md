@@ -22,34 +22,26 @@
 
 （代码中的魔法数字不要介意，因为代码太少了。没有看不懂的。）
 ```
-        this.options = options;
-        this.dataArr = dataArr;
-        let pdom = document.getElementById(options.parentName);
+    that.initCarousel = function (options) {
+        that.options = options;
+        that.dataArr = options.dataArr;
+        var pdom = document.getElementById(options.parentName);
         //创建dom片段
-        let frag = document.createDocumentFragment();
+        var frag = document.createDocumentFragment();
         //创建
-        for (let i = 0; i < options.initItemNum; i++) {
-            let child = document.createElement("div");
+        for (var i = 0; i < options.initItemNum; i++) {
+            var child = document.createElement("div");
             child.classList.add(options.itemCla);
             frag.appendChild(child);
             // animation: move 2s linear 1s infinite;
-            let time = i * 1;
+            var time = i * 1;
             child.style.animation = options.aniName + ` ` + options.moveTime + `s linear ` + time + 's infinite';
-            child.id = 'item_' + i;
+            // child.id = 'item_' + i;
         }
         pdom.appendChild(frag);
-        // 动画开始时事件
-        pdom.addEventListener("webkitAnimationStart", e => {
-            // console.log("开始动画", e.target.id);
-            this.initItem(e);
-        });
-        //动画结束事件
-        pdom.addEventListener("webkitAnimationIteration", e => {
-            // console.log('结束动画', e.target.id);
-            this.initItem(e);
-        });
-        //事件委托
-        pdom.addEventListener("click", this.onClick.bind(this));
+        that.initEvent();
+
+    };
 ```
 
 # 后面计划
@@ -109,7 +101,7 @@
         { value: '你太坏了' },
         { value: '什么啊？？？？？？？' }];
 
-    let options = {
+    var options = {
         //绑定的跑马灯容器dom id
         parentName: "paomadeng",
         //初始化创建的dom数量
@@ -121,7 +113,7 @@
         //动画名字
         aniName: "move",
         //数据
-        dataArr: [],
+        dataArr: dataArr,
         //点击回调
         clickCallBack: clickCallBack
     }
@@ -131,11 +123,15 @@
         console.log(e.target);
         console.log(e.target.bindData);
     }
+    var carou = new Carousel();
+    carou.initCarousel(options);
 
-    carousel.initCarousel(options, dataArr);
 </script>
 
 ```
+
+#FIX_ME:
+横向移动没有处理好；
 
 
 
