@@ -14,8 +14,8 @@ var Carousel = function () {
             var child = document.createElement("div");
             child.classList.add(options.itemCla);
             frag.appendChild(child);
-            // animation: move 2s linear 1s infinite;
-            var time = i * 1;
+            //延迟放入新的item，防止两个item粘到一起
+            var time = i * options.moveTime / 2;
             child.style.animation = options.aniName + ` ` + options.moveTime + `s linear ` + time + 's infinite';
             // child.id = 'item_' + i;
         }

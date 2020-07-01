@@ -17,16 +17,23 @@
     .paomadeng {
         --item-width: 200px;
         --item-height: 16px;
-        --item-init-x: 200px;
-        --item-target-x: -200px;
+        /* 纵向移动的坐标 */
+        --item-from-y: -16px;
+        --item-target-y: 16px;
+        /* 横向移动时候的坐标 */
+        --item-target-x: 200px;
+        --item-from-x: -200px;
         position: relative;
         overflow: hidden;
         width: var(--item-width);
         height: 16px;
-        border:2px solid red;
+        border: 2px solid red;
+        margin: auto;
     }
-    .paomadeng2{
-        margin-top: 100px;   
+
+    .paomadeng2 {
+        margin-top: 100px;
+        overflow: visible;
     }
 
     .paomadeng div {
@@ -34,27 +41,33 @@
         width: var(--item-width);
         position: absolute;
         display: inline-block;
+        text-align: center;
     }
+
     .paomadeng2 div {
         height: auto;
-        width: auto;
+        width: var(--item-width);
         position: absolute;
         display: inline-block;
     }
+
     @keyframes move {
         0% {
-            transform: translateY(-16px);
+            transform: translateY(var(--item-from-y));
         }
+
         100% {
-            transform: translateY(16px);
+            transform: translateY(var(--item-target-y));
         }
     }
+
     @keyframes move2 {
         0% {
-            transform: translateX(-100%);
+            transform: translateX(var(--item-from-x));
         }
+
         100% {
-            transform: translateX(var(--item-width));
+            transform: translateX(var(--item-target-x));
         }
     }
 </style>
@@ -91,7 +104,7 @@
     var carou = new Carousel();
     carou.initCarousel(options);
 
-    var options = {
+    options = {
         //绑定的跑马灯容器dom id
         parentName: "paomadeng2",
         //初始化创建的dom数量
